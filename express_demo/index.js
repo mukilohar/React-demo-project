@@ -26,15 +26,21 @@ if(!err) {
 
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get("/getstores",function(req,res){
+
+function getStores(res){
     var store_configuration_sql = "SELECT * from Stores";
+    var data;
     connection.query(store_configuration_sql, function(err, rows, fields) {
         if (!err)
-            console.log('Date Fetch Successfully');
+            console.log('Data Fetch Successfully');
         else
             console.log('Error while performing Query.');
-        res.send(rows);
+            res.send(rows);
     });
+}
+
+app.get("/getstores",function(req,res){
+    getStores(res);
 });
 
 
@@ -51,4 +57,19 @@ app.post("/createStore",function(req,res){
         });
     });
 
+    app.post("/deleteStores",function(req,res){
+        var d = req.body;
+        console.log(d.data);
+        console.log(d.action);
+        var insert_query = "delete from stores where id in ("+d.data+")";
+    
+        connection.query(insert_query, function(err, rows, fields) {
+            if (!err)
+            console.log('Store Deleted');
+            else
+            console.log('Error while performing Query.',err);
+            getStores(res);
+            });
+        });
+    
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

@@ -37,6 +37,7 @@ class Form extends Component {
         return (
             <main role="main" className="container">
                 <h2>Enter Details for Stores</h2>
+                {this.props.edit_id}
                 <form onSubmit={this.handleSubmit} >
                     <div class="row">
                     <div class="col-sm-6">

@@ -13,19 +13,19 @@ class Template extends Component {
     };
     constructor(props){
         super(props);
-        this.state = {currentComponent:Form};
+        this.state = {currentComponent:List, edit_id:null};
         this.redirectLink = this.redirectLink.bind(this);
     }
 
-    redirectLink(loadComponent){
-        this.setState({currentComponent:this.components[loadComponent]})
+    redirectLink(loadComponent, edit_id=null){
+        this.setState({currentComponent:this.components[loadComponent], edit_id:edit_id})
         console.log(this.state)
     }
     render(){
         return (
             <Fragment>
                 <Header redirectLink={this.redirectLink} />
-                < this.state.currentComponent redirectLink={this.redirectLink} />
+                < this.state.currentComponent redirectLink={this.redirectLink} edit_id= {this.state.edit_id} />
                 <Footer />
             </Fragment>
           )
