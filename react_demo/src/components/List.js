@@ -10,12 +10,13 @@ class List extends Component {
   
     constructor(props){     
         super(props);
-        this.options = {
-                        paginationPosition: 'top',
-                        onRowClick:(row)=>{
-                          this.props.redirectLink('Form', row.id);
-                        }
-                      };
+        this.state = {selected:[], totalSize:0, page: 1, sizePerPage: 10};
+        this.handleSubmit  = this.handleSubmit.bind(this);
+        this.fetchData = this.fetchData.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);  
+        this.handleSizePerPageChange = this.handleSizePerPageChange.bind(this);   
+        this.onSearchChange = this.onSearchChange.bind(this);   
+        
         this.selectRowProp = {
                               mode: 'checkbox', 
                               bgColor: '#ccc',
@@ -43,19 +44,33 @@ class List extends Component {
                                 }
                                
                               },
-                            };
-        this.state = {selected:[]};
-        this.handleSubmit  = this.handleSubmit.bind(this);
-        this.deleteStore  = this.deleteStore.bind(this);
-        
+                            };   
     }
     componentDidMount() {
-        axios(`http://localhost:3001/getstores`)
-        .then(response => {
-            let data = response.data;
-            this.setState({data:data});
-        })
+      this.fetchData();
+    }
+    handlePageChange(page, sizePerPage) {
+      this.fetchData(null,page, sizePerPage);
+    }
+    handleSizePerPageChange(sizePerPage) {
+      this.fetchData(null,1, sizePerPage);
+    }
+    onSearchChange(searchText, colInfos, multiColumnSearch) {
+      this.fetchData(searchText);
+    }
   
+    fetchData(searchText=null, page = this.state.page, sizePerPage = this.state.sizePerPage){
+      axios({
+        method:'post',
+        url:'http://localhost:3001/getstores',
+        headers: {'Content-Type': 'application/json'},
+        data: {page, sizePerPage, searchText},
+      })
+        .then(response => {
+            let data = response.data.data;
+            let totalSize = response.data.count[0].totalSize;
+            this.setState({data:data, totalSize: totalSize, page, sizePerPage});
+        })
     }
     handleSubmit(act){
         this.setState({action:act});
@@ -66,20 +81,31 @@ class List extends Component {
           headers: {'Content-Type': 'application/json'}
         })
         .then(response => {
-          let data = response.data;
+          let data = response.data.data;
           this.setState({data:data});
         })
     }
-    deleteStore(){
-      alert("delet");
-    }
+  
 
     render(){
+     const options = {
+        paginationPosition: 'top',
+        page: this.state.page,
+        sizePerPage: this.state.sizePerPage,
+        onPageChange: this.handlePageChange,
+        onSizePerPageList: this.handleSizePerPageChange,
+        onSearchChange: this.onSearchChange,
+        onRowClick:(row)=>{
+          this.props.redirectLink('Form', row.id);
+        }
+      };
         return (
         <main role="main" className="container">
             <button onClick={()=> this.props.redirectLink('Form')}>Create New</button>
             <button onClick={()=> this.handleSubmit('delete')} >Delete</button>
-            <BootstrapTable data={ this.state.data } pagination options={ this.options} selectRow={this.selectRowProp} >
+            <BootstrapTable search  multiColumnSearch data={ this.state.data } pagination options={ options} selectRow={this.selectRowProp} 
+            remote fetchInfo={{dataTotalSize: this.state.totalSize}}
+            >
               <TableHeaderColumn dataField='id' isKey>ID</TableHeaderColumn>
               <TableHeaderColumn dataField='store_name'>Store Name</TableHeaderColumn>
               <TableHeaderColumn dataField='address'>Address</TableHeaderColumn>

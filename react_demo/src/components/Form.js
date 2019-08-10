@@ -8,12 +8,35 @@ import axios from 'axios';
 
 class Form extends Component {
   
-    constructor(props){     
+    constructor(props){
         super(props);
         this.state={store_name:'',address:'',country:'', state:'', city:''}
         this.handleSubmit=this.handleSubmit.bind(this);   
-        this.handleInputChange=this.handleInputChange.bind(this);   
-             
+        this.handleInputChange=this.handleInputChange.bind(this);             
+    }
+
+    componentDidMount(){
+        this.setState({id:this.props.edit_id}, function() {
+                if(this.state.id!==null) {
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3001/getStoreDetails',
+                        data: {'id':this.state.id},            
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .then(response => {   
+                        console.log(response.data[0].address)       
+                        this.setState({
+                                        store_name:response.data[0].store_name,
+                                        address:response.data[0].address,
+                                        country:response.data[0].country,
+                                        state:response.data[0].state,
+                                        city:response.data[0].city,                                        
+                                    })
+                    });
+                }
+            }
+        );
     }
 
     handleSubmit(e){
@@ -37,7 +60,8 @@ class Form extends Component {
         return (
             <main role="main" className="container">
                 <h2>Enter Details for Stores</h2>
-                {this.props.edit_id}
+                <button style={{'float':'right'}} onClick={()=>this.props.redirectLink('List')} >Back</button>
+                Store Id : {this.props.edit_id}
                 <form onSubmit={this.handleSubmit} >
                     <div class="row">
                     <div class="col-sm-6">
@@ -63,7 +87,7 @@ class Form extends Component {
                     </div></div>
                     <div class="form-group">
                         <label>Address :</label>
-                        <textarea class="form-control" name="address" onChange={this.handleInputChange}>{this.state.address}</textarea>
+                        <textarea class="form-control" name="address" onChange={this.handleInputChange} value={this.state.address} />
                     </div>
                     <div class="form-group">
                         <input type="submit" class="form-control" />

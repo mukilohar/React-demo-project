@@ -27,9 +27,12 @@ if(!err) {
 app.use(bodyParser.urlencoded({extended: true}))
 
 
-function getStores(res){
-    var store_configuration_sql = "SELECT * from Stores";
-    var data;
+function getStores(res, id=null){
+    if(id!==null)
+        var store_configuration_sql = "SELECT * from Stores where id="+id;
+    else
+        var store_configuration_sql = "SELECT * from Stores";
+
     connection.query(store_configuration_sql, function(err, rows, fields) {
         if (!err)
             console.log('Data Fetch Successfully');
@@ -39,14 +42,44 @@ function getStores(res){
     });
 }
 
-app.get("/getstores",function(req,res){
-    getStores(res);
+app.post("/getstores",function(req,res){
+    var d = req.body;
+    var offset = d.sizePerPage*(d.page-1);
+    if(d.searchText!==null){
+        var store_query = "SELECT * FROM stores where store_name like '%"+d.searchText+"%' limit "+d.sizePerPage+" offset "+offset;
+        var count_query = "SELECT count(*) as totalSize FROM stores where store_name like '%"+d.searchText+"%'";
+    }
+    else{
+        var store_query = "SELECT * FROM stores limit "+d.sizePerPage+" offset "+offset;
+        var count_query = "SELECT count(*) as totalSize FROM stores where store_name";
+    }
+    console.log(store_query);
+    connection.query(store_query, function(err, rows, fields) {
+        var data = rows;
+        if (!err)
+            console.log('Data Fetch Successfully');
+        else
+            console.log('Error while performing Query.');
+        connection.query(count_query, function(err, rows, fields) {
+            res.send({data, 'count':rows});
+        });
+           
+    });
+});
+
+app.post("/getStoreDetails",function(req,res){
+    var id = req.body.id;
+    console.log(req.body);
+    getStores(res, id);
 });
 
 
 app.post("/createStore",function(req,res){
     var d = req.body;
-    var insert_query = "INSERT INTO stores (`store_name`,`address`,`country`, `state`,`city`) VALUES ('"+d.store_name+"','"+d.address+"','"+d.country+"','"+d.state+"','"+d.city+"')";
+    if(d.id!==null)
+        var insert_query = "Update stores set store_name='"+d.store_name+"',address='"+d.address+"',country='"+d.country+"',city='"+d.city+"',state='"+d.state+"' where id="+d.id;
+    else
+        var insert_query = "INSERT INTO stores (`store_name`,`address`,`country`, `state`,`city`) VALUES ('"+d.store_name+"','"+d.address+"','"+d.country+"','"+d.state+"','"+d.city+"')";
 
     connection.query(insert_query, function(err, rows, fields) {
         if (!err)

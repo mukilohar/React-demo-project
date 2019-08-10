@@ -4,12 +4,15 @@ import Footer from './Footer';
 import Content from './Content';
 import List from './List';
 import Form from './Form';
+import Hooks from './Hooks';
+
 
 class Template extends Component {
     components = {
         List: List,
         Form: Form,
         Content: Content,
+        Hooks: Hooks,
     };
     constructor(props){
         super(props);
