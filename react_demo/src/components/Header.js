@@ -22,6 +22,13 @@ class Header extends Component {
                   <li className="nav-item">
                     <a className="nav-link disabled" href="#" onClick={()=> this.props.redirectLink('Hooks')}>Hooks</a>
                   </li>
+                  <li className="nav-item">
+                    <a className="nav-link disabled" href="#" onClick={()=> this.props.redirectLink('HOC')}>HOC</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link disabled" href="#" onClick={()=> this.props.redirectLink('Context')}>Context</a>
+                  </li>
+                  
                 </ul>
                 <form className="form-inline mt-2 mt-md-0">
                   <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" />

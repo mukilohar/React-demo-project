@@ -5,6 +5,8 @@ import Content from './Content';
 import List from './List';
 import Form from './Form';
 import Hooks from './Hooks';
+import HOC from './HOC';
+import Context from './Context';
 
 
 class Template extends Component {
@@ -13,6 +15,8 @@ class Template extends Component {
         Form: Form,
         Content: Content,
         Hooks: Hooks,
+        HOC: HOC,
+        Context:Context,
     };
     constructor(props){
         super(props);

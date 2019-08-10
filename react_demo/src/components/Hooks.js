@@ -9,9 +9,11 @@ function Hooks() {
     // Update the document title using the browser API
     document.title = `You clicked ${count} times`;
   });
-
+  const ref = React.createRef();
   return (
     <main role="main" className="container">
+     
+    <FancyButton ref={ref}>Fancy Button!</FancyButton>;
     <div>
       <p>You clicked {count} times</p>
       <p> {mystate[0].text} {mystate[0].more}</p>
@@ -22,6 +24,15 @@ function Hooks() {
     </main>
   );
 }
+
+const FancyButton = React.forwardRef((props, ref) => (
+  <button ref={ref} className="FancyButton">
+    {props.children}
+  </button>
+));
+
+// You can now get a ref directly to the DOM button:
+
 
 
 export default Hooks;
