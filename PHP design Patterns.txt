@@ -1,0 +1,13 @@
+Design Patterns
+Facade : Single interface to complete multiple procedures eg. qtycheck > shipping charges > discount > generate order.
+
+Adater : (changable) E.g Payment Adapter
+call pay method in adapter to call different payment gateways payment method().
+
+Decorator : e.g. Decorator use for email templating.
+
+Strategy : Eg. condoitional using of payment methods.
+
+Factory : Eg. Factory use for creating object of  diffrent cars. Car_sedan
+
+Command : Command execute (turn oN turn Off)

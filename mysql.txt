@@ -1,0 +1,5 @@
+MySql :
+1. find even Odd :
+mod(number, 2) = 0
+
+2. LENGTH(str)

@@ -20,7 +20,7 @@ class Template extends Component {
     };
     constructor(props){
         super(props);
-        this.state = {currentComponent:List, edit_id:null};
+        this.state = {currentComponent:Content, edit_id:null};
         this.redirectLink = this.redirectLink.bind(this);
     }
 

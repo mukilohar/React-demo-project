@@ -1,0 +1,26 @@
+* magento Components
+1. modules
+2. Themes
+3. Language
+
+** File Structure Of component 
+
+1. Module : app/code
+2. storefront : app/design/frontend
+3. Admin theme : app/design/adminhtml
+4. language : app/i18n
+5. Third party  modules are install on vendor/ folder.
+
+*** Required files
+1. registration.php
+2. etc/module.xml
+3. composer.json
+
+**** Module Lifecycle
+1. schema install, reinstall, upgrade, install intialData code in /Setup directory.
+
+
+**** Build
+
+
+

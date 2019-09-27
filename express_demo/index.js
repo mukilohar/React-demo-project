@@ -51,7 +51,7 @@ app.post("/getstores",function(req,res){
     }
     else{
         var store_query = "SELECT * FROM stores limit "+d.sizePerPage+" offset "+offset;
-        var count_query = "SELECT count(*) as totalSize FROM stores where store_name";
+        var count_query = "SELECT count(*) as totalSize FROM stores";
     }
     console.log(store_query);
     connection.query(store_query, function(err, rows, fields) {

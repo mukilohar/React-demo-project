@@ -1,0 +1,31 @@
+1. Strict Mode
+2. hoisting : Hoisting allows JavaScript to use a component before it has been declared.
+3. Returning function, parameterized function, default argument function (x, y=7), Rest parameters (...params)
+4. Anonymous Function : without identifier.
+	var res = function( [arguments] ) { ... } 
+5. Function contructor : 
+	var func = new Function("x", "y", "return x*y;"); 
+6. Lambda Functions :
+	([param1, parma2,…param n] )=>statement;
+	Optional parentheses for a single parameter.
+	var msg =x=> return x;
+
+7. Generator : 
+		"use strict" 
+		function* rainbow() { 
+		// the asterisk marks this as a generator 
+		yield 'red'; 
+		yield 'orange'; 
+		yield 'yellow'; 
+		yield 'green'; 
+		yield 'blue'; 
+		yield 'indigo'; 
+		yield 'violet'; 
+		} 
+		for(let color of rainbow()) { 
+		console.log(color); 
+		} OR rainbow().next();
+
+8. Storing Cookies
+	"document.cookie = "key1 = value1; key2 = value2; expires = date";
+
